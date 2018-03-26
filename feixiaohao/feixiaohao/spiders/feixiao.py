@@ -4,24 +4,25 @@ from ..items import FeixiaohaoItem
 
 class FeixiaoSpider(scrapy.Spider):
     name = 'feixiao'
-    allowed_domains = ['feixiaohao.com']
     start_urls = ['https://www.feixiaohao.com']
+    
 
     def parse_info(self, response):
         feixiaohaoitem = FeixiaohaoItem()
-        all_list = response.xpath('//div[@class="boxContain"]/table[@class="table maintable"]/tbody/tr//td/a/text()').extract()
-        split_list = []
-        for i in range(0,len(all_list),4):
-            split_list.append(all_list[i:i+4])
-        for i in split_list:
-            feixiaohaoitem['name'] = i[1].strip()
-            feixiaohaoitem['price'] = i[2].strip()
-            feixiaohaoitem['market_price'] = i[3].strip()
-            return feixiaohaoitem
-        return feixiaohaoitem
+        all_list = response.xpath('//div[@class="boxContain"]/table[@class="table maintable"]/tbody//tr')
+        for i in all_list:
+
+            feixiaohaoitem['f_id'] = i.xpath('.//td')[0].xpath('./text()').extract_first().strip()
+            feixiaohaoitem['name'] = i.xpath('.//td')[1].xpath('./a/text()').extract()[1].strip()
+            feixiaohaoitem['flow_market_price'] = i.xpath('.//td')[2].xpath('./text()').extract_first().strip()
+            feixiaohaoitem['price'] = i.xpath('.//td')[3].xpath('./a/text()').extract_first().strip()
+            feixiaohaoitem['flow_amount'] = i.xpath('.//td')[4].xpath('./text()').extract_first().strip()
+            feixiaohaoitem['trade_amount'] = i.xpath('.//td')[5].xpath('./a/text()').extract_first().strip()
+            feixiaohaoitem['price_change'] = i.xpath('.//td')[6].xpath('./span/text()').extract_first().strip()
+            yield feixiaohaoitem
 
 
     def parse(self, response):
-        num_page = response.xpath('//div[@class="pageList"]/a/text()').extract()[-2]
-        for i in range(1,int(num_page)+1):
+            
+        for i in range(1,3):
             yield scrapy.Request(response.url+'/list_'+str(i)+'.html',callback=self.parse_info)

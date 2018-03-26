@@ -9,10 +9,11 @@ import scrapy
 
 
 class FeixiaohaoItem(scrapy.Item):
+    f_id = scrapy.Field()
     name = scrapy.Field()
-    market_price = scrapy.Field()
+    flow_market_price = scrapy.Field()
     price = scrapy.Field()
-    market_amount = scrapy.Field()
-    count_amount = scrapy.Field()
-    increase = scrapy.Field()
+    flow_amount = scrapy.Field()
+    trade_amount = scrapy.Field()
+    price_change = scrapy.Field()
 
