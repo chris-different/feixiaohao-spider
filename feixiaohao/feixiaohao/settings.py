@@ -67,6 +67,7 @@ ROBOTSTXT_OBEY = True
 ITEM_PIPELINES = {
     'feixiaohao.pipelines.FeixiaohaoPipeline': 1,
 #    'feixiaohao.pipelines.MyPipeline': 2,
+#    'feixiaohao.pipelines.PingtaiPipeline':3,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

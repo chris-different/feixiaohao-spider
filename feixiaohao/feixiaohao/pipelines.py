@@ -7,6 +7,7 @@
 import redis
 import codecs
 import json
+import pymongo
 class FeixiaohaoPipeline(object):
     def __init__(self):
         self.r = redis.StrictRedis(host='127.0.0.1',port=6379)
@@ -23,7 +24,19 @@ class FeixiaohaoPipeline(object):
             })
         
         return item
-    
+
+class PingtaiPipeline(object):
+    def __init__(self):
+        connection = pymongo.MongoClient('127.0.0.1',27017)
+        tdb = connection.alpha87
+        self.post = tdb.test
+    def process_item(self, item, spider):
+        self.post.insert({'name':item['name'],'summary':item['summary'],'country':item['country'],'amount':item['amount']})
+        return item
+
+
+
+
 class MyPipeline(object):
     def __init__(self):
         self.file = codecs.open(

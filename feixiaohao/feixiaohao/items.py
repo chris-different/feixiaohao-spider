@@ -17,3 +17,9 @@ class FeixiaohaoItem(scrapy.Item):
     trade_amount = scrapy.Field()
     price_change = scrapy.Field()
 
+
+class PingtaiItem(scrapy.Item):
+    name = scrapy.Field()
+    summary = scrapy.Field()
+    country = scrapy.Field()
+    amount = scrapy.Field()
